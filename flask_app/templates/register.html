@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/bootstrap/bootstrap.min.css') }}">
+    <title>Register/Login</title>
+</head>
+<body>
+    <div class="container w-25 mt-5">
+        <div class="card">
+            <div class="class-header mx-2">
+                <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" href="#register" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" data-toggle="tab" role="tab" aria-controls="register" aria-selected="true">Register</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" href="/login_page" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" data-toggle="tab" role="tab" aria-controls="login" aria-selected="false">Login</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="register" role="tabpanel" aria-labelledby="register-tab">
+
+                        <form action="/register" method="post">
+
+                                {% with messages = get_flashed_messages(category_filter=['register']) %}    <!-- declare a variable called messages -->
+                                {% if messages %}                                                       <!-- check if there are any messages -->
+                                {% for message in messages %}                                       <!-- loop through the messages -->
+                                        <p class="text-danger w-100 text-wrap">{{message}}</p>          <!-- display each message in a paragraph tag -->
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+
+                            <div class="form-group">
+                                <label for="first_name">First Name:</label>
+                                <input type="text" name="first_name" class="form-control" value="{{fname}}">
+                            </div>
+                            <div class="form-group">
+                                <label for="last_name">Last Name:</label>
+                                <input type="text" name="last_name" class="form-control" value="{{lname}}">
+                            </div>
+                            <div class="form-group">
+                                <label for="yard">Yard:</label>
+                                <select name="yard" id="#" class="form-control">
+                                    <option value=""></option>
+                                    <option value="HIL">Hillsboro</option>
+                                    <option value="PTLD">Portland</option>
+                                    <option value="SLM">Salem</option>
+                                    <option value="VAN">Vancouver</option>
+                                    <option value="WIL">Wilsonville</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="text" name="email" class="form-control" value="{{email}}">
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password:</label>
+                                <input type="text" name="password" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirm_password">Confirm Password:</label>
+                                <input type="text" name="confirm_password" class="form-control">
+                            </div>
+                            <input type="hidden">
+                            <button class="btn btn-primary my-2">Register</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

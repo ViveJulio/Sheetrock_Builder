@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/bootstrap/bootstrap.min.css') }}">
+    <title>About</title>
+</head>
+<body>
+    <!-- header -->
+    <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+        <div class="container-fluid bg-primary">
+            <a class="navbar-brand" href="/dashboard">Sheetrock Builder</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                <a class="nav-link" href="/dashboard">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/all_orders">Community</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link active" href="/about">About</a>
+                <span class="visually-hidden">(current)</span>
+                </li>
+            </ul>
+            <form class="d-flex align-items-center">
+                <a href="/new_order" class="btn btn-secondary mx-3">New Order</a>
+                <div class="dropdown">
+                    <p class="mt-2 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{user.first_name}}<img src="{{url_for('static', filename='/css/img/user-circle.png')}}" width="50" alt="User Icon" class="rounded-circle mx-2"></p>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" role="menu">
+                        <a class="dropdown-item" href="/profile">Profile</a>
+                        <a class="dropdown-item" href="#settings">Settings</a>
+                        <a class="dropdown-item" href="/logout">Logout</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        </div>
+    </nav>
+
+    <!-- body -->
+    <div class="container text-center">
+        <h1 class="text-center">Full Stack Developer</h1>
+        <h3 class="text-center text-body-secondary">Julio Viveros</h3>
+        <img src="{{url_for('static', filename='/css/img/XTQXyWkF_400x400.jpg')}}" alt="developer image" width="200px" class="rounded-circle align-self-center">
+    </div>
+    <p class="text-center w-75 m-auto mt-3 border border-secondary rounded">A full stack developer on a mission to integrate coding into the construction distribution business. The last 5 years have been spent working in construction wholesale
+        and in the last 8 months I've learned how to develop a full stack. This project is meant to cut down labor time of the forklift operators. With this I plan to get my foot in the door hopefully gain the opportunity of a web developer in my company. Thank you to my peers at Coding Dojo and my teacher, Robert Yearling,
+        for helping me achieve this wonderful asset.
+    </p>
+</body>
+</html>

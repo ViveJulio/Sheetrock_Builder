@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/bootstrap/bootstrap.min.css') }}">
+    <title>Register/Login</title>
+</head>
+<body>
+    <div class="container w-25 mt-5">
+        <div class="card">
+            <div class="class-header mx-2">
+                <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" href="/" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" data-toggle="tab" role="tab" aria-controls="register" aria-selected="true">Register</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" href="#login" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" data-toggle="tab" role="tab" aria-controls="login" aria-selected="false">Login</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
+
+                        <form action="/login" method="post">
+
+                            {% with messages = get_flashed_messages(category_filter=['login']) %}   <!-- declare a variable called messages -->
+                            {% if messages %}                                                   <!-- check if there are any messages -->
+                            {% for message in messages %}                                   <!-- loop through the messages -->
+                            <p class="text-danger">{{message}}</p>                      <!-- display each message in a paragraph tag -->
+                            {% endfor %}
+                            {% endif %}
+                            {% endwith %}
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="text" name="email" class="form-control" value="{{login_email}}">
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password:</label>
+                                <input type="text" name="password" class="form-control">
+                            </div>
+                            <button class="btn btn-success my-2">Login</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/flask_app/static/script.js"></script>
+</body>
+</html>
