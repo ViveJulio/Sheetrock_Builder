@@ -11,6 +11,7 @@ def build_truck():
         'lw5412' : int(request.form['lw5412']),
         'fc12' : int(request.form['fc12']),
         'fc5412' : int(request.form['fc5412']),
+        'm1212' : int(request.form['m1212']),
         'notes' : request.form['notes'],
         'user_id' : session['user_id']
     }
@@ -29,6 +30,7 @@ def update(order_id):
         'lw5412' : int(request.form['lw5412']),
         'fc12' : int(request.form['fc12']),
         'fc5412' : int(request.form['fc5412']),
+        'm1212' : int(request.form['m1212']),
         'notes' : request.form['notes'],
         'user_id' : session['user_id']
     }

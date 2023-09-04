@@ -69,6 +69,11 @@
                         <td>58FC12 picks: {{order.build.fc12p}}</td>
                     </tr>
                     {% endif %}
+                    {% if order.build.m1212p > 0 %}
+                    <tr>
+                        <td>12M12 picks: {{order.build.m1212p}}</td>
+                    </tr>
+                    {% endif %}
                     {% if order.build.remainder_pick != None %}
                     <tr>
                         {% for pick in order.build.remainder_pick %}
@@ -77,7 +82,7 @@
                     </tr>
                     {% endif %}
                 </tbody>
-                {% set sheets = {'lw12' : order['lw12'], 'lw5412' : order['lw5412'], 'fc12' : order['fc12'], 'fc5412' : order['fc5412']} %}
+                {% set sheets = {'lw12' : order['lw12'], 'lw5412' : order['lw5412'], 'fc12' : order['fc12'], 'fc5412' : order['fc5412'], 'm1212' : order['m1212']} %}
                     {% for key, val in sheets.items() %}
                     {% if val > 0 %}
                     <li class="list-unstyled">{{key}}: {{val}} pcs</li>
@@ -90,8 +95,10 @@
         <form action="/delete_order/{{order.id}}" onsubmit="return confirm('Are you sure you wish to delete?');">
         <div class="mt-2">
             <a href="/dashboard" class="btn btn-primary">Dashboard</a>
+            {% if order.user_id == user.id %}
             <a href="/edit_order/{{order.id}}" class="btn btn-secondary">Edit Order</a>
             <button class="btn btn-danger">Delete</button>
+            {% endif %}
         </div>
     </form>
     </div>

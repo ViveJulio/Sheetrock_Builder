@@ -18,7 +18,9 @@ class Build():
         self.fc12p = data['fc12p']
         self.fc12r = data['fc12r']
         self.m1212p = data['m1212p']
-        self.m1212r = data['m1212r']
+        self.m5812r = data['m5812r']
+        self.m1212p = data['m1212p']
+        self.m5812r = data['m5812r']
 
         self.remainder_pick = None
 
@@ -36,6 +38,26 @@ class Build():
             fc12_pick_remainder = list(divmod(data['fc12'], 27))
 
         m1212_pick_remainder = list(divmod(data['m1212'], 34))
+        m5812_pick_remainder = list(divmod(data['m5812'], 26))
+        if m5812_pick_remainder[1] == 1 and m5812_pick_remainder[0] == 1:
+            m5812_pick_remainder = list(divmod(data['m5812'], 27))
+
+        if 'update' in data:
+            build_data = {
+                'lw5412p' : lw5412_pick_remainder[0],
+                'lw5412r' : lw5412_pick_remainder[1],
+                'fc5412p' : fc5412_pick_remainder[0],
+                'fc5412r' : fc5412_pick_remainder[1],
+                'lw12p' : lw12_pick_remainder[0],
+                'lw12r' : lw12_pick_remainder[1],
+                'fc12p' : fc12_pick_remainder[0],
+                'fc12r' : fc12_pick_remainder[1],
+                'm1212p' : m1212_pick_remainder[0],
+                'm1212r' : m1212_pick_remainder[1],
+                'm5812p' : m5812_pick_remainder[0],
+                'm5812r' : m5812_pick_remainder[1]
+            }
+            return build_data
 
         remainder_picks = []
 
@@ -144,11 +166,10 @@ class Build():
                     break
             remainder_picks.append(mixed_pick2)
 
-        #rid of fc12, add remainder of 12lw12
+        #rid of fc12
         if fc12_pick_remainder[1] > 0:
             mixed_pick3 = [{'fc12' : fc12_pick_remainder[1]}]
             lw12_sheets = 0
-            m1212_sheets = 0
             fc12pick_inches = float(fc12_pick_remainder[1] * .625)
 
             while True:
@@ -176,32 +197,6 @@ class Build():
                         mixed_pick3.append({'lw12' : lw12_sheets})
                         fc12_pick_remainder[1] = 0
                     break
-
-            # add remainder of water board to 5/8s if no 12lw12 available
-            while True:
-                while lw12_pick_remainder[1] < 1 and m1212_pick_remainder[1] > 0 and fc12pick_inches < 16.25:
-                    if m1212_pick_remainder[1] != 1:
-                        fc12pick_inches += 1
-                        m1212_sheets += 2
-                        m1212_pick_remainder[1] -= 2
-                    else:
-                        fc12pick_inches += .5
-                        m1212_sheets += 1
-                        m1212_pick_remainder[1] -= 1
-
-                if fc12pick_inches > 17:
-                    fc12pick_inches -= .5
-                    m1212_sheets -= 1
-                    m1212_pick_remainder[1] += 1
-                print('see here _____>', m1212_sheets)
-                if fc12pick_inches < 16.25 and m1212_pick_remainder[0] > 0:
-                    m1212_pick_remainder[0] -= 1
-                    m1212_pick_remainder[1] += 34
-
-                else:
-                    if m1212_sheets > 0:
-                        mixed_pick3.append({'m1212' : m1212_sheets})
-                    break
             remainder_picks.append(mixed_pick3)
 
         #add water board to remaining lw12
@@ -221,42 +216,14 @@ class Build():
                         m1212_sheets += 1
                         m1212_pick_remainder[1] -= 1
 
-                if lw12pick_inches > 17:
-                    lw12pick_inches -= .5
-                    m1212_sheets -= 1
-                    m1212_pick_remainder += 1
+                if lw12pick_inches > 17 and m1212_pick_remainder[1] > 0:
+                    print("WTF")
 
-                if lw12pick_inches < 16.25 and m1212_pick_remainder[0] > 0:
-                    m1212_pick_remainder[0] -= 1
-                    m1212_pick_remainder[1] += 34
-                else:
-                    if m1212_sheets > 0:
-                        mixed_pick4.append({'m1212' : m1212_sheets})
-                        lw12_pick_remainder[1] = 0
-                    break
+
+                mixed_pick4.append({'m1212' : m1212_sheets})
+                m1212_pick_remainder[1] = 0
+                break
             remainder_picks.append(mixed_pick4)
-
-        #check to see if any remainder of water board is left, make it a remainder pick
-        if m1212_pick_remainder[1] > 0:
-            m1212_pick = [{'m1212' : m1212_pick_remainder[1]}]
-            remainder_picks.append(m1212_pick)
-            m1212_pick_remainder[1] = 0
-
-        #checks to see if this is an update to an existing order
-        if 'update' in data:
-            build_data = {
-                'lw5412p' : lw5412_pick_remainder[0],
-                'lw5412r' : lw5412_pick_remainder[1],
-                'fc5412p' : fc5412_pick_remainder[0],
-                'fc5412r' : fc5412_pick_remainder[1],
-                'lw12p' : lw12_pick_remainder[0],
-                'lw12r' : lw12_pick_remainder[1],
-                'fc12p' : fc12_pick_remainder[0],
-                'fc12r' : fc12_pick_remainder[1],
-                'm1212p' : m1212_pick_remainder[0],
-                'm1212r' : m1212_pick_remainder[1]
-            }
-            return build_data
 
         #this series of actions will perform for new orders with no id yet to prevent duplicate code and duplicate orders
         if 'id' not in data:
@@ -271,12 +238,14 @@ class Build():
                 'fc12p' : fc12_pick_remainder[0],
                 'fc12r' : fc12_pick_remainder[1],
                 'm1212p' : m1212_pick_remainder[0],
-                'm1212r' : m1212_pick_remainder[1]
+                'm1212r' : m1212_pick_remainder[1],
+                'm5812p' : m5812_pick_remainder[0],
+                'm5812r' : m5812_pick_remainder[1]
             }
 
             query = """
-                    INSERT INTO builds (order_id, lw5412p, lw5412r, fc5412p, fc5412r, lw12p, lw12r, fc12p, fc12r, m1212p, m1212r)
-                    VALUES (%(order_id)s, %(lw5412p)s, %(lw5412r)s, %(fc5412p)s, %(fc5412r)s, %(lw12p)s, %(lw12r)s, %(fc12p)s, %(fc12r)s, %(m1212p)s, %(m1212r)s)
+                    INSERT INTO builds (order_id, lw5412p, lw5412r, fc5412p, fc5412r, lw12p, lw12r, fc12p, fc12r)
+                    VALUES (%(order_id)s, %(lw5412p)s, %(lw5412r)s, %(fc5412p)s, %(fc5412r)s, %(lw12p)s, %(lw12r)s, %(fc12p)s, %(fc12r)s)
                     """
 
             results = connectToMySQL(db).query_db(query, build_data)
@@ -325,7 +294,7 @@ class Build():
         build_data = Build.build_truck(data)
         query = f"""
                 UPDATE builds
-                SET lw5412p = %(lw5412p)s, lw5412r = %(lw5412r)s, lw12p = %(lw12p)s, lw12r = %(lw12r)s, fc12p = %(fc12p)s, fc12r = %(fc12r)s, fc5412p = %(fc5412p)s, fc5412r = %(fc5412r)s, m1212p = %(m1212p)s, m1212r = %(m1212r)s
+                SET lw5412p = %(lw5412p)s, lw5412r = %(lw5412r)s, lw12p = %(lw12p)s, lw12r = %(lw12r)s, fc12p = %(fc12p)s, fc12r = %(fc12r)s, fc5412p = %(fc5412p)s, fc5412r = %(fc5412r)s
                 WHERE id = {order_id};
                 """
         results = connectToMySQL(db).query_db(query, build_data)

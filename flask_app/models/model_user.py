@@ -57,7 +57,7 @@ class User:
         if len(user['last_name']) < 2:
             flash("Name must be at least 2 characters", 'register')
             is_valid = False
-        if len(user['yard']) < 0:
+        if len(user['yard']) < 1:
             flash("yard must not be blank", "register")
             is_valid = False
         if not EMAIL_REGEX.match(user['email']):
