@@ -74,6 +74,11 @@
                         <td>12M12 picks: {{order.build.m1212p}}</td>
                     </tr>
                     {% endif %}
+                    {% if order.build.m5812p > 0 %}
+                    <tr>
+                        <td>58M12 picks: {{order.build.m5812p}}</td>
+                    </tr>
+                    {% endif %}
                     {% if order.build.remainder_pick != None %}
                     <tr>
                         {% for pick in order.build.remainder_pick %}
@@ -82,7 +87,7 @@
                     </tr>
                     {% endif %}
                 </tbody>
-                {% set sheets = {'lw12' : order['lw12'], 'lw5412' : order['lw5412'], 'fc12' : order['fc12'], 'fc5412' : order['fc5412'], 'm1212' : order['m1212']} %}
+                {% set sheets = {'lw12' : order['lw12'], 'lw5412' : order['lw5412'], 'fc12' : order['fc12'], 'fc5412' : order['fc5412'], 'm1212' : order['m1212'], 'm5812' : order['m5812']} %}
                     {% for key, val in sheets.items() %}
                     {% if val > 0 %}
                     <li class="list-unstyled">{{key}}: {{val}} pcs</li>

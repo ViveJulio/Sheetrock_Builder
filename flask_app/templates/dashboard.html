@@ -76,7 +76,7 @@
 
                         <!-- display quantities -->
                         <p>Quantities</p>
-                        {% set order = {'lw12' : last_order['lw12'], 'lw5412' : last_order['lw5412'], 'fc12' : last_order['fc12'], 'fc5412' : last_order['fc5412'], 'm1212' : last_order['m1212']} %}
+                        {% set order = {'lw12' : last_order['lw12'], 'lw5412' : last_order['lw5412'], 'fc12' : last_order['fc12'], 'fc5412' : last_order['fc5412'], 'm1212' : last_order['m1212'], 'm5812' : last_order['m5812']} %}
                         {% for key, val in order.items() %}
                         {% if val > 0 %}
                         <li class="list-group-item">{{key}}: {{val}} pcs</li>
@@ -85,7 +85,7 @@
 
                         <!-- display picks -->
                         <p>Picks</p>
-                        {% set build = {'lw12' : last_order.build.lw12p, 'lw5412' : last_order.build.lw12p, 'fc12' : last_order.build.fc12p, 'fc5412' : last_order.build.fc5412p, 'm1212' : last_order.build.m1212p} %}
+                        {% set build = {'lw12' : last_order.build.lw12p, 'lw5412' : last_order.build.lw5412p, 'fc12' : last_order.build.fc12p, 'fc5412' : last_order.build.fc5412p, 'm1212' : last_order.build.m1212p, 'm5812' : last_order.build.m5812p} %}
                         {% for key, val in build.items() %}
                         {% if val > 0 %}
                         <li class="list-group-item">{{key}}: {{val}} picks</li>

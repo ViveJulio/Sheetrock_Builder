@@ -16,6 +16,7 @@ class Order:
         self.fc12 = data['fc12']
         self.fc5412 = data['fc5412']
         self.m1212 = data['m1212']
+        self.m5812 = data['m5812']
         self.notes = data['notes']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
@@ -27,8 +28,8 @@ class Order:
     @classmethod
     def new_order(cls, data):
         query = """
-                INSERT INTO orders (name, lw12, lw5412, fc12, fc5412, m1212, notes, user_id)
-                VALUES (%(name)s, %(lw12)s, %(lw5412)s, %(fc12)s, %(fc5412)s, %(m1212)s, %(notes)s, %(user_id)s)
+                INSERT INTO orders (name, lw12, lw5412, fc12, fc5412, m1212, m5812, notes, user_id)
+                VALUES (%(name)s, %(lw12)s, %(lw5412)s, %(fc12)s, %(fc5412)s, %(m1212)s, %(m5812)s, %(notes)s, %(user_id)s)
                 """
         results = connectToMySQL(db).query_db(query, data)
         return results
@@ -37,7 +38,7 @@ class Order:
     def update_order(cls, data, order_id):
         query =f"""
                 UPDATE orders
-                SET name = %(name)s, lw12 = %(lw12)s, lw5412 = %(lw5412)s, fc12 = %(fc12)s, fc5412 = %(fc5412)s, m1212 = %(m1212)s, notes = %(notes)s, user_id = %(user_id)s
+                SET name = %(name)s, lw12 = %(lw12)s, lw5412 = %(lw5412)s, fc12 = %(fc12)s, fc5412 = %(fc5412)s, m1212 = %(m1212)s, m5812 = %(m5812)s, notes = %(notes)s, user_id = %(user_id)s
                 WHERE id = {order_id};
                 """
         results = connectToMySQL(db).query_db(query, data)
@@ -70,6 +71,7 @@ class Order:
                 'lw12' : results[0]['lw12'],
                 'fc12' : results[0]['fc12'],
                 'm1212' : results[0]['m1212'],
+                'm5812' : results[0]['m5812'],
                 'notes' : results[0]['notes']
             }
         build_data = {
@@ -84,7 +86,9 @@ class Order:
                 'fc12p' : results[0]['fc12p'],
                 'fc12r' : results[0]['fc12r'],
                 'm1212p' : results[0]['m1212p'],
-                'm1212r' : results[0]['m1212r']
+                'm1212r' : results[0]['m1212r'],
+                'm5812p' : results[0]['m5812p'],
+                'm5812r' : results[0]['m5812r']
             }
         order.build = Build(build_data)
         order.build.remainder_pick = Build.build_truck(order_data)
@@ -109,7 +113,8 @@ class Order:
                 'fc5412' : row['fc5412'],
                 'lw12' : row['lw12'],
                 'fc12' : row['fc12'],
-                'm1212' : row['m1212']
+                'm1212' : row['m1212'],
+                'm5812' : row['m5812']
             }
             build_data = {
                 'id' : row['builds.id'],
@@ -123,7 +128,9 @@ class Order:
                 'fc12p' : row['fc12p'],
                 'fc12r' : row['fc12r'],
                 'm1212p' : row['m1212p'],
-                'm1212r' : row['m1212r']
+                'm1212r' : row['m1212r'],
+                'm5812p' : row['m5812p'],
+                'm5812r' : row['m5812r']
             }
             build = Build(build_data)
             build.remainder_pick = build.build_truck(order_data)
@@ -151,7 +158,8 @@ class Order:
                 'fc5412' : row['fc5412'],
                 'lw12' : row['lw12'],
                 'fc12' : row['fc12'],
-                'm1212' : row['m1212']
+                'm1212' : row['m1212'],
+                'm5812' : row['m5812']
             }
             user_data = {
                 'id' : row['users.id'],
@@ -175,7 +183,9 @@ class Order:
                 'fc12p' : row['fc12p'],
                 'fc12r' : row['fc12r'],
                 'm1212p' : row['m1212p'],
-                'm1212r' : row['m1212r']
+                'm1212r' : row['m1212r'],
+                'm5812p' : row['m5812p'],
+                'm5812r' : row['m5812r']
             }
             user = User(user_data)
             build = Build(build_data)
@@ -204,6 +214,9 @@ class Order:
             flash('quantity must not be negative')
             is_valid = False
         if order['m1212'] < 0:
+            flash('quantity must not be negative')
+            is_valid = False
+        if order['m5812'] < 0:
             flash('quantity must not be negative')
             is_valid = False
         return is_valid
